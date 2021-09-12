@@ -1,5 +1,9 @@
 public class HeapSort {
 
+    /**
+     * Sorting array of variables.
+      * @param arr array to sort
+     */
     static public void sort(int[] arr)
     {
         int n = arr.length;
@@ -39,10 +43,4 @@ public class HeapSort {
         }
     }
 
-    static void printArray(int[] arr)
-    {
-        int n = arr.length;
-        for (int j : arr) System.out.print(j + " ");
-        System.out.println();
-    }
 }

@@ -21,6 +21,12 @@ public class HeapSort {
         }
     }
 
+    /**
+     * changed position elements in array by the rule
+     * @param arr array with elems
+     * @param n count elems in array
+     * @param i elem for start
+     */
     static void sifting(int[] arr, int n, int i)
     {
         int largest = i;

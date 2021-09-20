@@ -12,7 +12,7 @@ public class SentenceFinder {
         if (subSentence == "") {
             return "";
         }
-        int i = -1;
+            int i = -1;
         int maxBuffer = 100000;
         int cntBuffer = 0;
         char[] buffer = new char[maxBuffer];
@@ -34,7 +34,8 @@ public class SentenceFinder {
                 int flag = 0;
                 while (((c = reader.read()) != -1) && (flag == 0)) {
                     if (numEq == subSentence.length()) {
-                        return i + " ";
+                        answer += i + " ";
+                        break;
                     }
                     temp = (char) c;
                     buffer[cntBuffer++] = temp;

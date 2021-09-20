@@ -19,7 +19,7 @@ public class TestSentenceFind {
         String fileName = "input.txt";
         String sentence = "w";
         String ans = sf.findSentence(fileName, sentence);
-        Assertions.assertEquals("8 ", ans);
+        Assertions.assertEquals("8 27 ", ans);
     }
 
     @Test

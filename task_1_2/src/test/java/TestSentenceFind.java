@@ -49,4 +49,13 @@ public class TestSentenceFind {
         String ans = sf.findSentence(fileName, sentence);
         Assertions.assertEquals("3795 6415 35594 217581 226446 230083 230310 385491 400864 432865 546268 728513 ", ans);
     }
+
+    @Test
+    public void testOnWrongFile() throws IOException {
+        SentenceFinder sf = new SentenceFinder();
+        String fileName = "input3.txt";
+        String sentence = "aux";
+        String ans = sf.findSentence(fileName, sentence);
+        Assertions.assertEquals("file is not exist", ans);
+    }
 }

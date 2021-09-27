@@ -1,4 +1,5 @@
 import java.io.*;
+import java.nio.file.Files;
 import java.util.Objects;
 
 public class SentenceFinder {
@@ -29,8 +30,12 @@ public class SentenceFinder {
      * @param pattern  string which we find in file
      * @return number of each pattern in file
      */
-    public String findSentence(String file, String pattern) throws IOException {
+    public String findSentence(String filename, String pattern) throws IOException {
+        final File file = new File(filename);
         if (Objects.equals(pattern, "")) return "";
+        if(!(file.exists())){
+            return "file is not exist";
+        }
 
         String ans = "";
         int[] p = piFunc(pattern);

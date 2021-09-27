@@ -1,69 +1,65 @@
 import java.io.*;
-import java.nio.charset.StandardCharsets;
+import java.util.Objects;
 
 public class SentenceFinder {
-    /**
-     * @param file        from which we get the string
-     * @param subSentence what should we find
-     * @return a string that is empty if we don't have repetitions or the start index
-     * @throws IOException working out exceptions
-     */
-    public String findSentence(String file, String subSentence) throws IOException {
-        if (subSentence == "") {
-            return "";
-        }
-            int i = -1;
-        int maxBuffer = 100000;
-        int cntBuffer = 0;
-        char[] buffer = new char[maxBuffer];
-        String answer = "";
 
-        FileReader reader = new FileReader(file);
-        int c = 0;
-        char temp;
-        while (c != -1) {
-            i++;
-            if (cntBuffer == 0) {
-                c = reader.read();
-                temp = (char) c;
-            } else {
-                temp = buffer[cntBuffer--];
-            }
-            if (temp == subSentence.charAt(0)) {
-                int numEq = 1;
-                int flag = 0;
-                while (((c = reader.read()) != -1) && (flag == 0)) {
-                    if (numEq == subSentence.length()) {
-                        answer += i + " ";
-                        break;
-                    }
-                    temp = (char) c;
-                    buffer[cntBuffer++] = temp;
-                    if (temp == subSentence.charAt(numEq)) {
-                        numEq++;
-                    } else {
-                        flag = 1;
-                        numEq = 0;
-                    }
-                }
+    /**
+     * @param str subSentence(pattern)
+     * @return pi-function return the array with max prefix of each symbol
+     */
+    public int[] piFunc(String str) {
+
+        int n = str.length();
+        int[] pi = new int[n];
+        pi[0] = 0;
+
+        for (int i = 1; i < n; ++i) {
+            int maxSufPref = pi[i - 1];
+            while (maxSufPref > 0 && str.charAt(i) != str.charAt(maxSufPref))
+                maxSufPref = pi[maxSufPref - 1];
+            if (str.charAt(maxSufPref) == str.charAt(i))
+                ++maxSufPref;
+            pi[i] = maxSufPref;
+        }
+        return pi;
+    }
+
+    /**
+     * @param file name of file were we search the string
+     * @param str  string which we find in file (pattern)
+     * @return number of each pattern in file
+     */
+    public String findSentence(String file, String str) throws IOException {
+        if (Objects.equals(str, "")) return "";
+
+        String ans = "";
+        int[] p = piFunc(str);
+        int m = str.length();
+
+        BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
+        int cntOfEq = 0;
+        int sym = bufferedReader.read();
+        for (int i = 0; sym != -1; i++) {
+            char c = (char) sym;
+            sym = bufferedReader.read();
+            while (cntOfEq > 0 && c != str.charAt(cntOfEq))
+                cntOfEq = p[cntOfEq - 1];
+            if (c == str.charAt(cntOfEq))
+                cntOfEq++;
+            if (cntOfEq == m) {
+                ans += (i - cntOfEq + 1) + (" ");
+                cntOfEq = p[cntOfEq - 1];
+
             }
         }
-/*
-        for (int i = 0; i < lengthBuffer; i++) {
-            if (buffer[i] == subSentence.charAt(0)) {
-                int numberOfEquals = 0;
-                for (int j = 0; j < subSentence.length(); j++) {
-                    if (buffer[i + j] == subSentence.charAt(j)) {
-                        numberOfEquals++;
-                    }
-                }
-                if(numberOfEquals == subSentence.length()){
-                    return i + " ";
-                }
-            }
-        }
-*/
-        reader.close();
-        return answer;
+        return ans;
     }
 }
+
+
+
+
+
+
+
+

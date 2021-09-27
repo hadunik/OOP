@@ -3,27 +3,28 @@ import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 
+
 public class TestSentenceFind {
     @Test
-    public void simpleTestOnWord() throws IOException{
+    public void simpleTestOnWord() throws IOException {
         SentenceFinder sf = new SentenceFinder();
         String fileName = "input.txt";
-        String sentence = "want";
+        String sentence = "aabaab";
         String ans = sf.findSentence(fileName, sentence);
-        Assertions.assertEquals("8 ", ans);
+        Assertions.assertEquals("0 10 13 16 ", ans);
     }
 
     @Test
-    public void simpleTestOnLetter() throws IOException{
+    public void simpleTestOnLetter() throws IOException {
         SentenceFinder sf = new SentenceFinder();
         String fileName = "input.txt";
-        String sentence = "w";
+        String sentence = "a";
         String ans = sf.findSentence(fileName, sentence);
-        Assertions.assertEquals("8 27 ", ans);
+        Assertions.assertEquals("0 1 3 4 6 7 8 9 10 11 13 14 16 17 19 20 23 24 25 ", ans);
     }
 
     @Test
-    public void testNoMatches() throws IOException{
+    public void testNoMatches() throws IOException {
         SentenceFinder sf = new SentenceFinder();
         String fileName = "input.txt";
         String sentence = "no";
@@ -32,7 +33,7 @@ public class TestSentenceFind {
     }
 
     @Test
-    public void testOnEmpty() throws IOException{
+    public void testOnEmpty() throws IOException {
         SentenceFinder sf = new SentenceFinder();
         String fileName = "input.txt";
         String sentence = "";

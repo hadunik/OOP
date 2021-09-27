@@ -26,29 +26,29 @@ public class SentenceFinder {
 
     /**
      * @param file name of file were we search the string
-     * @param str  string which we find in file (pattern)
+     * @param pattern  string which we find in file
      * @return number of each pattern in file
      */
-    public String findSentence(String file, String str) throws IOException {
-        if (Objects.equals(str, "")) return "";
+    public String findSentence(String file, String pattern) throws IOException {
+        if (Objects.equals(pattern, "")) return "";
 
         String ans = "";
-        int[] p = piFunc(str);
-        int m = str.length();
+        int[] p = piFunc(pattern);
+        int m = pattern.length();
 
         BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
-        int cntOfEq = 0;
+        int indicator = 0;
         int sym = bufferedReader.read();
         for (int i = 0; sym != -1; i++) {
             char c = (char) sym;
             sym = bufferedReader.read();
-            while (cntOfEq > 0 && c != str.charAt(cntOfEq))
-                cntOfEq = p[cntOfEq - 1];
-            if (c == str.charAt(cntOfEq))
-                cntOfEq++;
-            if (cntOfEq == m) {
-                ans += (i - cntOfEq + 1) + (" ");
-                cntOfEq = p[cntOfEq - 1];
+            while (indicator > 0 && c != pattern.charAt(indicator))
+                indicator = p[indicator - 1];
+            if (c == pattern.charAt(indicator))
+                indicator++;
+            if (indicator == m) {
+                ans += (i - indicator + 1) + (" ");
+                indicator = p[indicator - 1];
 
             }
         }

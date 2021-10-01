@@ -1,6 +1,5 @@
 import java.io.*;
-import java.nio.file.Files;
-import java.util.Objects;
+import java.util.ArrayList;
 
 public class SentenceFinder {
 
@@ -26,22 +25,34 @@ public class SentenceFinder {
     }
 
     /**
-     * @param file name of file were we search the string
+     * @param filename name of file were we search the string
      * @param pattern  string which we find in file
      * @return number of each pattern in file
      */
-    public String findSentence(String filename, String pattern) throws IOException {
-        final File file = new File(filename);
-        if (Objects.equals(pattern, "")) return "";
-        if(!(file.exists())){
-            return "file is not exist";
+    public Integer[] findSentence(String filename, String pattern) throws IOException {
+        if (pattern == null || pattern.equals("")) {
+            throw new IOException("substring is null");
         }
 
-        String ans = "";
+        if (filename == null) {
+            throw new IOException("path to file is null");
+        }
+        if (pattern.isEmpty()) {
+            return null;
+        }
+
+        BufferedReader bufferedReader;
+        try {
+            bufferedReader = new BufferedReader(new FileReader(filename));
+        } catch (IOException e) {
+            throw new IOException("file not found");
+        }
+
+
         int[] p = piFunc(pattern);
         int m = pattern.length();
+        ArrayList<Integer> ans = new ArrayList<Integer>();
 
-        BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
         int indicator = 0;
         int sym = bufferedReader.read();
         for (int i = 0; sym != -1; i++) {
@@ -52,12 +63,14 @@ public class SentenceFinder {
             if (c == pattern.charAt(indicator))
                 indicator++;
             if (indicator == m) {
-                ans += (i - indicator + 1) + (" ");
+                ans.add(i - indicator + 1);
                 indicator = p[indicator - 1];
 
             }
         }
-        return ans;
+        Integer[] arr = {-1};
+        arr = (ans.toArray(arr));
+        return arr[0] == null ? null : arr;
     }
 }
 

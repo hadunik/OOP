@@ -24,7 +24,8 @@ public class TestSentenceFind {
         Throwable thrown = assertThrows(IOException.class, () -> {
             Integer[] ans = sf.findSentence(fileName, sentence);
         });
-        assertNotNull(thrown.getMessage());
+        String exc = "file not found";
+        assertEquals( exc, thrown.getMessage());
     }
 
     @Test
@@ -35,7 +36,8 @@ public class TestSentenceFind {
         Throwable thrown = assertThrows(IOException.class, () -> {
             Integer[] ans = sf.findSentence(fileName, sentence);
         });
-        assertNotNull(thrown.getMessage());
+        String exc = "path to file is null";
+        assertEquals( exc, thrown.getMessage());
     }
 
     @Test
@@ -46,7 +48,8 @@ public class TestSentenceFind {
         Throwable thrown = assertThrows(IOException.class, () -> {
             Integer[] ans = sf.findSentence(fileName, sentence);
         });
-        assertNotNull(thrown.getMessage());
+        String exc = "substring is null";
+        assertEquals( exc, thrown.getMessage());
     }
 
     @Test
@@ -57,7 +60,8 @@ public class TestSentenceFind {
         Throwable thrown = assertThrows(IOException.class, () -> {
             Integer[] ans = sf.findSentence(fileName, sentence);
         });
-        assertNotNull(thrown.getMessage());
+        String exc = "substring is null";
+        assertEquals( exc, thrown.getMessage());
     }
 
 

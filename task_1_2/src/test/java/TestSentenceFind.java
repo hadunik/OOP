@@ -28,6 +28,17 @@ public class TestSentenceFind {
     }
 
     @Test
+    public void testOnWrongFile2() throws IOException {
+        SentenceFinder sf = new SentenceFinder();
+        String fileName = null;
+        String sentence = "aux";
+        Throwable thrown = assertThrows(IOException.class, () -> {
+            Integer[] ans = sf.findSentence(fileName, sentence);
+        });
+        assertNotNull(thrown.getMessage());
+    }
+
+    @Test
     public void testOnEmpty() throws IOException {
         SentenceFinder sf = new SentenceFinder();
         String fileName = "input.txt";

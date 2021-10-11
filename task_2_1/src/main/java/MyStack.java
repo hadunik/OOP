@@ -28,8 +28,14 @@ public class MyStack<T> {
     }
 
     public void pushStack(MyStack<T> newStack) {
-        for (int i = 0; i < newStack.end; i++) {
-            this.push(newStack.arr[i]);
+        int n = newStack.count();
+        MyStack<T> temp = new MyStack<>();
+        temp.increaseStack(n);
+        for(int i = 0; i < n;i++){
+            temp.push(newStack.pop());
+        }
+        for(int i = 0; i < n;i++){
+            push(temp.pop());
         }
     }
 
@@ -37,7 +43,7 @@ public class MyStack<T> {
         if (end < 1) {
             throw new EmptyStackException();
         }
-        return this.arr[--end];
+        return arr[--end];
     }
 
     private void increaseStack(int newSize) {

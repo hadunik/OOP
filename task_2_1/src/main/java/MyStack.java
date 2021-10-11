@@ -24,8 +24,7 @@ public class MyStack<T> {
 
     public void push(T elem) {
         checkStack();
-        arr[end] = elem;
-        end++; //изменить потом
+        arr[end++] = elem;
     }
 
     public void pushStack(MyStack<T> newStack) {

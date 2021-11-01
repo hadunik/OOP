@@ -1,3 +1,6 @@
+import lombok.AllArgsConstructor;
+
+@AllArgsConstructor
 public class Subject {
     private String name;
     private int mark;

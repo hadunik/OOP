@@ -11,6 +11,32 @@ public class MyCreditBook {
         creditBook = new ArrayList<>();
     }
 
+    public void changeMark(int semester, String sub, int new_mark) throws Exception {
+        if (semester <= 0 || semester >= 9) {
+            throw new Exception("Incorrect semester");
+        }
+        if (semester > currentSemester)
+            currentSemester = semester;
+        if (new_mark < 3 || new_mark > 5) {
+            throw new Exception("Incorrect mark");
+        }
+        if (creditBook.size() < semester) {
+            throw new Exception("Not Exist such semester in credit book");
+        }
+        if (creditBook.get(semester - 1).getSubjectsStream()
+                .noneMatch(i -> Objects.equals(i.getName(), sub))) {
+            throw new Exception("Not Exist such subject in credit book");
+        }
+        creditBook.get(semester - 1).getSubjects()
+                .stream()
+                .filter(i -> Objects.equals(i.getName(), sub))
+                .findFirst()
+                .map(i -> {
+                    i.setMark(new_mark);
+                    return i;
+                });
+    }
+
     public void addMark(int semester, String sub, int mark, boolean last_semester) throws Exception {
         if (semester <= 0 || semester >= 9) {
             throw new Exception("Incorrect semester");
@@ -26,96 +52,60 @@ public class MyCreditBook {
             temp.setNumber(semester);
             creditBook.add(temp);
         }
-        Subject subject = new Subject();
-        subject.setName(sub);
-        subject.setMark(mark);
-        subject.setLast(last_semester);
-        creditBook.get(semester - 1).getSubjects().add(subject);
-    }
-
-    public void changeMark(int semester, String sub, int new_mark) throws Exception {
-        if (semester <= 0 || semester >= 9) {
-            throw new Exception("Incorrect semester");
-        }
-        if (semester > currentSemester)
-            currentSemester = semester;
-        if (new_mark < 2 || new_mark > 5) {
-            throw new Exception("Incorrect mark");
-        }
-        if (creditBook.size() < semester) {
-            throw new Exception("Not Exist such semester in credit book");
-        }
-        if(creditBook.get(semester - 1).getSubjects().stream()
-                .noneMatch(i -> Objects.equals(i.getName(), sub))){
-            throw new Exception("Not Exist such subject in credit book");
-        }
-        for(Subject t : creditBook.get(semester - 1).getSubjects()){
-            if(Objects.equals(t.getName(),sub)){
-                t.setMark(new_mark);
-                return;
-            }
+        if (creditBook.get(semester - 1).getSubjectsStream()
+                .noneMatch(i -> Objects.equals(i.getName(), sub))) {
+            Subject subject = new Subject(sub, mark, last_semester);
+            creditBook.get(semester - 1).addSubject(subject);
+        } else {
+            throw new Exception("This subject already exists");
         }
     }
 
     public float averageMark() {
         float res = 0;
         int cnt = 0;
-        for(Semester t1 : creditBook){
-            for(Subject t2 : t1.getSubjects()){
+        for (Semester t1 : creditBook) {
+            for (Subject t2 : t1.getSubjects()) {
                 cnt++;
                 res += t2.getMark();
             }
         }
-        res /= cnt;
-        return res;
+        return res / cnt;
     }
 
     public boolean checkRedDiploma() {
         int cnt = 0;
         int cntExc = 0;
-        for(Semester t1 : creditBook){
-            for(Subject t2 : t1.getSubjects()){
-                if(t2.getMark() == 5 && t2.lastSemester()){
-                    cntExc++;
-                }
-                if(t2.lastSemester()){
-                    cnt++;
-                }
-                if(t2.getMark() <= 3){
+        for (Semester t1 : creditBook) {
+            for (Subject t2 : t1.getSubjects()) {
+                if (t2.getMark() <= 3) {
                     return false;
+                }
+                if (t2.lastSemester()) {
+                    if (t2.getMark() == 5) {
+                        cntExc++;
+                    }
+                    cnt++;
                 }
             }
         }
 
         if (creditBook.size() < 8) {
             return (cnt * 0.75 <= cntExc);
-        }
-        else if(creditBook.get(7).getSubjects().stream()
-                .noneMatch(i -> Objects.equals(i.getName(), "Diploma"))){
+        } else if (creditBook.get(7).getSubjectsStream()
+                .noneMatch(i -> Objects.equals(i.getName(), "Diploma"))) {
             return (cnt * 0.75 <= cntExc);
         }
-        else {
-            for (Subject t : creditBook.get(7).getSubjects()) {
-                if (Objects.equals(t.getName(), "Diploma")) {
-                    if (t.getMark() != 5)
-                        return false;
-                }
-            }
-        }
+        return creditBook.get(7)
+                .getSubjectsStream()
+                .filter(i -> Objects.equals(i.getName(), "Diploma"))
+                .anyMatch(i -> i.getMark() == 5);
 
-        return (cnt * 0.75 <= cntExc);
     }
 
     public boolean checkIncreasedScholarship() {
-        for(Subject t : creditBook.get(currentSemester - 1).getSubjects()){
-            if(t.getMark() != 5){
-                return false;
-            }
-        }
-        return true;
+        return creditBook.get(currentSemester - 1)
+                .getSubjectsStream()
+                .noneMatch(i -> i.getMark() != 5);
     }
-
 }
-
-
-

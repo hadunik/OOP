@@ -3,6 +3,7 @@ import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Stream;
 
 public class Semester {
     private int number;
@@ -22,4 +23,11 @@ public class Semester {
         subjects = new ArrayList<>();
     }
 
+    public Stream<Subject> getSubjectsStream(){
+        return subjects.stream();
+    }
+
+    public void addSubject(Subject subject){
+        subjects.add(subject);
+    }
 }

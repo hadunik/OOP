@@ -11,7 +11,10 @@ public class Semester {
     @Setter
     private List<Subject> subjects;
 
-    public void setNumber(int val){
+    public void setNumber(int val) throws Exception{
+        if (val <= 0 || val >= 9) {
+            throw new Exception("Incorrect semester");
+        }
         number = val;
     }
 
@@ -29,5 +32,10 @@ public class Semester {
 
     public void addSubject(Subject subject){
         subjects.add(subject);
+    }
+
+    public boolean checkIncSolar(){
+        return subjects.stream()
+                .noneMatch(i -> i.getMark() != 5);
     }
 }

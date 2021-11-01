@@ -12,14 +12,8 @@ public class MyCreditBook {
     }
 
     public void changeMark(int semester, String sub, int new_mark) throws Exception {
-        if (semester <= 0 || semester >= 9) {
-            throw new Exception("Incorrect semester");
-        }
         if (semester > currentSemester)
             currentSemester = semester;
-        if (new_mark < 3 || new_mark > 5) {
-            throw new Exception("Incorrect mark");
-        }
         if (creditBook.size() < semester) {
             throw new Exception("Not Exist such semester in credit book");
         }
@@ -32,20 +26,18 @@ public class MyCreditBook {
                 .filter(i -> Objects.equals(i.getName(), sub))
                 .findFirst()
                 .map(i -> {
-                    i.setMark(new_mark);
+                    try {
+                        i.setMark(new_mark);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                     return i;
                 });
     }
 
     public void addMark(int semester, String sub, int mark, boolean last_semester) throws Exception {
-        if (semester <= 0 || semester >= 9) {
-            throw new Exception("Incorrect semester");
-        }
         if (semester > currentSemester)
             currentSemester = semester;
-        if (mark < 3 || mark > 5) {
-            throw new Exception("Incorrect mark");
-        }
         if (creditBook.stream()
                 .noneMatch(i -> i.getNumber() == semester)) {
             Semester temp = new Semester();
@@ -104,8 +96,6 @@ public class MyCreditBook {
     }
 
     public boolean checkIncreasedScholarship() {
-        return creditBook.get(currentSemester - 1)
-                .getSubjectsStream()
-                .noneMatch(i -> i.getMark() != 5);
+        return creditBook.get(currentSemester - 1).checkIncSolar();
     }
 }

@@ -1,0 +1,23 @@
+{
+  "cookers": {
+    "count": 5,
+    "experience": [
+      10,
+      22,
+      33,
+      50,
+      20
+    ]
+  },
+  "couriers": {
+    "count": 2,
+    "backpackCap": [
+      15,
+      10
+    ]
+  },
+  "warehouse": {
+    "capacity": 4
+  },
+  "cookingTime": 100
+}
